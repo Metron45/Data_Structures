@@ -1,4 +1,3 @@
-﻿  Tablica.cpp
-c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\tablica.cpp(72): warning C4715: 'Tablica::szukaj_kluczIndexu': not all control paths return a value
+﻿  Lista.cpp
   SDIZO_Zadanie1.vcxproj -> C:\Users\Metron\Documents\GitHub\SDIZO\SDIZO_Zadanie1\Debug\SDIZO_Zadanie1.exe
   SDIZO_Zadanie1.vcxproj -> C:\Users\Metron\Documents\GitHub\SDIZO\SDIZO_Zadanie1\Debug\SDIZO_Zadanie1.pdb (Full PDB)

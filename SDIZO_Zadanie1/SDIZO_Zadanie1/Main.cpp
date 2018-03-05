@@ -3,11 +3,13 @@
 
 #include "stdafx.h"
 #include "Tablica.h"
+#include "lista.h"
 
 
 int main()
 {
 	Tablica tablica;
+	Lista lista;
 	int menu=0;
 
 	label_TrybPracy:							//menu TrybPracy
@@ -24,7 +26,7 @@ int main()
 		printf("===Wybierz Strukture Danych===\n");
 		printf("0.Powrot\n");
 		printf("1.Tablica\n");
-		printf("2.\n");
+		printf("2.Lista Dwukierunkowa\n");
 		printf("3.\n");
 		std::cin >> menu;
 		switch (menu) {
@@ -70,7 +72,41 @@ int main()
 			break;
 		case 2:
 		label_testowy_ListaDwukierunkowa:					//menu lista dwukierunkowa
-
+			printf("===Lista Testowanie===\n");
+			printf("0.Powrot\n");
+			printf("1.Wyswietl Strukture\n");
+			printf("2.Stworz losowa Strukture\n");
+			printf("3.Wczytaj Strukture\n");
+			printf("4.Dodaj element\n");
+			printf("5.Usun element\n");
+			printf("6.Szukaj element\n");
+			std::cin >> menu;
+			switch (menu) {
+			case 0:
+				lista.reset();
+				goto label_testowy_Struktura;
+			case 1:
+				lista.wypisz();
+				goto label_testowy_ListaDwukierunkowa;
+			case 2:
+				lista.menu_stworz();
+				break;
+			case 3:
+				lista.menu_wczytaj();
+				break;
+			case 4:
+				lista.menu_dodaj();
+				break;
+			case 5:
+				lista.menu_usun();
+				break;
+			case 6:
+				lista.menu_szukaj();
+				break;
+			default:
+				break;
+			}
+			goto label_testowy_ListaDwukierunkowa;
 			break;
 		case 3:
 		label_testowy_Kopiec:
