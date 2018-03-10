@@ -111,7 +111,6 @@ void Tablica::wypisz() {
 
 void Tablica::stworz_losowo(int rozmiar)
 {
-
 	if (rozmiar > 0) {
 		reset();
 		srand((int)time(NULL));

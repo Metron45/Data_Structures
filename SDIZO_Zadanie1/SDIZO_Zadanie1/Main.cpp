@@ -3,13 +3,15 @@
 
 #include "stdafx.h"
 #include "Tablica.h"
-#include "lista.h"
+#include "Lista.h"
+#include "Kopiec.h"
 
 
 int main()
 {
 	Tablica tablica;
 	Lista lista;
+	Kopiec kopiec;
 	int menu=0;
 
 	label_TrybPracy:							//menu TrybPracy
@@ -27,7 +29,7 @@ int main()
 		printf("0.Powrot\n");
 		printf("1.Tablica\n");
 		printf("2.Lista Dwukierunkowa\n");
-		printf("3.\n");
+		printf("3.Kopiec\n");
 		std::cin >> menu;
 		switch (menu) {
 		case 0:
@@ -90,26 +92,62 @@ int main()
 				goto label_testowy_ListaDwukierunkowa;
 			case 2:
 				lista.menu_stworz();
-				break;
+				goto label_testowy_ListaDwukierunkowa;
 			case 3:
 				lista.menu_wczytaj();
-				break;
+				goto label_testowy_ListaDwukierunkowa;
 			case 4:
 				lista.menu_dodaj();
-				break;
+				goto label_testowy_ListaDwukierunkowa;
 			case 5:
 				lista.menu_usun();
-				break;
+				goto label_testowy_ListaDwukierunkowa;
 			case 6:
 				lista.menu_szukaj();
-				break;
+				goto label_testowy_ListaDwukierunkowa;
 			default:
 				break;
 			}
-			goto label_testowy_ListaDwukierunkowa;
+			
 			break;
+
 		case 3:
 		label_testowy_Kopiec:
+			printf("===Kopiec Testowanie===\n");
+			printf("0.Powrot\n");
+			printf("1.Wyswietl Strukture\n");
+			printf("2.Stworz losowa Strukture\n");
+			printf("3.Wczytaj Strukture\n");
+			printf("4.Dodaj element\n");
+			printf("5.Usun element\n");
+			printf("6.Szukaj element\n");
+			std::cin >> menu;
+			switch (menu) {
+			case 0:
+				kopiec.reset();
+				goto label_testowy_Struktura;
+			case 1:
+				kopiec.wypisz();
+				goto label_testowy_Kopiec;
+			case 2:
+				kopiec.menu_stworz();
+				goto label_testowy_Kopiec;
+			case 3:
+				kopiec.menu_wczytaj();
+				goto label_testowy_Kopiec;
+			case 4:
+				kopiec.menu_dodaj();
+				goto label_testowy_Kopiec;
+			case 5:
+				kopiec.menu_usun();
+				goto label_testowy_Kopiec;
+			case 6:
+				kopiec.menu_szukaj();
+				goto label_testowy_Kopiec;
+			default:
+				goto label_testowy_Kopiec;
+			}
+
 		default:
 			goto label_testowy_Struktura;
 		}
