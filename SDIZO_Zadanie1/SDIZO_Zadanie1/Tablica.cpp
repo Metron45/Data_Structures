@@ -40,6 +40,79 @@ void Tablica::dodaj_klucz_naIndex(int klucz, int index)
 	}
 }
 
+void Tablica::test_dodaj_klucz_koniec(int rozmiar_struktury)
+{
+	int i = 0, quantity, temp, tpos;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	stworz_losowo(rozmiar_struktury);
+
+	srand(time(NULL));
+	while (i < 100)
+	{
+		temp = rand();
+
+		clock = std::chrono::high_resolution_clock::now();
+		dodaj_klucz_koniec(temp);
+		diff = std::chrono::high_resolution_clock::now() - clock;
+		
+		std::cout << diff.count() << std::endl;
+		usun_klucz_koniec();
+		i++;
+	}
+}
+
+void Tablica::test_dodaj_klucz_poczatek(int rozmiar_struktury)
+{
+	int i = 0, quantity, temp, tpos;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	stworz_losowo(rozmiar_struktury);
+
+	srand(time(NULL));
+	while (i < 100)
+	{
+		temp = rand();
+
+		clock = std::chrono::high_resolution_clock::now();
+		dodaj_klucz_poczatek(temp);
+		diff = std::chrono::high_resolution_clock::now() - clock;
+
+		std::cout << diff.count() << std::endl;
+		usun_klucz_poczatek();
+		i++;
+	}
+}
+
+void Tablica::test_dodaj_klucz_index(int rozmiar_struktury)
+{
+	int i = 0, quantity, temp, index;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	stworz_losowo(rozmiar_struktury);
+	index = rozmiar_struktury / 2;
+
+	srand(time(NULL));
+	while (i < 100)
+	{
+		temp = rand();
+
+		clock = std::chrono::high_resolution_clock::now();
+		dodaj_klucz_naIndex(temp,index);
+		diff = std::chrono::high_resolution_clock::now() - clock;
+
+		std::cout << diff.count() << std::endl;
+		usun_klucz_poczatek();
+		i++;
+	}
+}
+
 bool Tablica::potwierdz_klucz(int klucz)
 {
 	for (int index_tablicy = 0; index_tablicy < rozmiar_tablicy; index_tablicy++)
@@ -245,4 +318,33 @@ void Tablica::menu_wczytaj()
 		printf("No such file\n");
 	}
 	wypisz();
+}
+
+void Tablica::menu_pomiarowe_dodaj()
+{
+	int menu, rozmiar_struktury;
+	printf("\n===Mierz dodawanie liczby===\n");
+	printf("0.Na koniec\n");
+	printf("1.Na poczatek\n");
+	printf("2.Na okreslony index\n");
+	std::cin >> menu;
+	printf("Podaj rozmiar struktury\n");
+	std::cin >> rozmiar_struktury;
+	switch (menu)
+	{
+	case 0:
+
+		test_dodaj_klucz_koniec(rozmiar_struktury);
+		break;
+	case 1:
+
+		test_dodaj_klucz_poczatek(rozmiar_struktury);
+		break;
+	case 2:
+
+		test_dodaj_klucz_index(rozmiar_struktury);
+		break;
+	default:
+		break;
+	}
 }

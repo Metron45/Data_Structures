@@ -112,7 +112,7 @@ int main()
 			break;
 
 		case 3:
-		label_testowy_Kopiec:
+		label_testowy_Kopiec:						//menu testowe Kopca
 			printf("===Kopiec Testowanie===\n");
 			printf("0.Powrot\n");
 			printf("1.Wyswietl Strukture\n");
@@ -149,10 +149,55 @@ int main()
 			}
 
 		default:
-			goto label_testowy_Struktura;
+			goto label_testowy_Kopiec;
 		}
 		break;
+
 	case 1:
+	label_pomiarowy_Struktura:									//meny wyboru struktury do pomiarów
+		printf("===Wybierz Strukture Danych do pomiarow===\n");
+		printf("0.Powrot\n");
+		printf("1.Tablica\n");
+		printf("2.Lista Dwukierunkowa\n");
+		printf("3.Kopiec\n");
+		std::cin >> menu;
+
+		switch (menu) {
+		case 0: 
+			goto label_pomiarowy_Struktura;
+		case 1:					//menu wybory pomiarów na tablicy		
+			label_pomiarowy_Tablica:
+			printf("===Tablica_Pomiary===\n");
+			printf("0.Powrot\n");
+			printf("1.Dodaj element\n");
+			printf("2.Usun element\n");
+			printf("3.Szukaj element\n");
+			std::cin >> menu;
+			switch (menu) {
+			case 0:
+				tablica.reset();
+				break;
+			case 1:
+				tablica.menu_pomiarowe_dodaj();
+				break;
+			case 2:
+				tablica.menu_stworz();
+				break;
+			case 3:
+				tablica.menu_wczytaj();
+				break;
+
+			default:
+				break;
+			}
+			goto label_pomiarowy_Tablica;
+
+
+
+		default:
+			goto label_TrybPracy;
+		}
+
 
 		break;
 	case 2:
