@@ -42,7 +42,7 @@ void Tablica::dodaj_klucz_naIndex(int klucz, int index)
 
 void Tablica::test_dodaj_klucz_koniec(int rozmiar_struktury)
 {
-	int i = 0, quantity, temp, tpos;
+	int i = 0, temp;
 	std::chrono::high_resolution_clock::time_point clock;
 	std::chrono::nanoseconds diff;
 
@@ -66,7 +66,7 @@ void Tablica::test_dodaj_klucz_koniec(int rozmiar_struktury)
 
 void Tablica::test_dodaj_klucz_poczatek(int rozmiar_struktury)
 {
-	int i = 0, quantity, temp, tpos;
+	int i = 0,temp;
 	std::chrono::high_resolution_clock::time_point clock;
 	std::chrono::nanoseconds diff;
 
@@ -141,6 +141,29 @@ int Tablica::szukaj_kluczIndexu(int index)
 		return *(wskaznik_tablicy + index);
 }
 
+void Tablica::test_potwierdz_klucz(int rozmiar_struktury)
+{
+	int i = 0,  temp;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	stworz_losowo(rozmiar_struktury);
+
+	srand(time(NULL));
+	while (i < 100)
+	{
+		temp = rand();
+
+		clock = std::chrono::high_resolution_clock::now();
+		potwierdz_klucz(-1);
+		diff = std::chrono::high_resolution_clock::now() - clock;
+
+		std::cout << diff.count() << std::endl;
+		i++;
+	}
+}
+
 void Tablica::usun_klucz_koniec()
 {
 	rozmiar_tablicy--;
@@ -167,6 +190,83 @@ void Tablica::usun_klucz(int klucz)
 {
 	if (potwierdz_klucz(klucz)) {
 		usun_klucz_naIndex(szukaj_indexKlucza(klucz));
+	}
+}
+
+void Tablica::test_usun_koniec(int rozmiar_struktury)
+{
+	int i = 0, temp;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	stworz_losowo(rozmiar_struktury);
+
+	srand(time(NULL));
+	while (i < 100)
+	{
+		temp = rand();
+
+		clock = std::chrono::high_resolution_clock::now();
+		usun_klucz_koniec();
+		diff = std::chrono::high_resolution_clock::now() - clock;
+
+		std::cout << diff.count() << std::endl;
+		dodaj_klucz_koniec(temp);
+		i++;
+	}
+}
+
+void Tablica::test_usun_poczatek(int rozmiar_struktury)
+{
+	int i = 0, temp;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	stworz_losowo(rozmiar_struktury);
+
+	srand(time(NULL));
+	while (i < 100)
+	{
+		temp = rand();
+
+		clock = std::chrono::high_resolution_clock::now();
+		usun_klucz_poczatek();
+		diff = std::chrono::high_resolution_clock::now() - clock;
+
+		std::cout << diff.count() << std::endl;
+		dodaj_klucz_koniec(temp);
+		i++;
+	}
+}
+
+void Tablica::test_usun_klucz(int rozmiar_struktury)
+{
+	int i = 0;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	while (i < rozmiar_struktury) {
+		dodaj_klucz_koniec(i);
+		i++;
+	}
+	
+	i = 0;
+
+	
+	while (i < 100)
+	{
+		
+
+		clock = std::chrono::high_resolution_clock::now();
+		usun_klucz(rozmiar_tablicy / 2);
+		diff = std::chrono::high_resolution_clock::now() - clock;
+
+		std::cout << diff.count() << std::endl;
+		dodaj_klucz_naIndex(rozmiar_tablicy / 2, rozmiar_tablicy / 2);
+		i++;
 	}
 }
 
@@ -343,6 +443,44 @@ void Tablica::menu_pomiarowe_dodaj()
 	case 2:
 
 		test_dodaj_klucz_index(rozmiar_struktury);
+		break;
+	default:
+		break;
+	}
+}
+
+void Tablica::menu_pomiarowe_szukaj()
+{
+	int menu, rozmiar_struktury;
+	printf("\n===Mierz szukanie liczby===\n");
+	printf("Podaj rozmiar struktury\n");
+	std::cin >> rozmiar_struktury;
+	test_potwierdz_klucz(rozmiar_struktury);
+}
+
+void Tablica::menu_pomiarowe_usun()
+{
+	int menu, rozmiar_struktury;
+	printf("\n===Mierz usuwanie liczby===\n");
+	printf("0.Na koncu\n");
+	printf("1.Na poczatku\n");
+	printf("2.Po kluczu\n");
+	std::cin >> menu;
+	printf("Podaj rozmiar struktury\n");
+	std::cin >> rozmiar_struktury;
+	switch (menu)
+	{
+	case 0:
+
+		test_usun_koniec(rozmiar_struktury);
+		break;
+	case 1:
+
+		test_usun_poczatek(rozmiar_struktury);
+		break;
+	case 2:
+
+		test_usun_klucz(rozmiar_struktury);
 		break;
 	default:
 		break;

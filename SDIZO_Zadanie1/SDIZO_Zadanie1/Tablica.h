@@ -23,6 +23,7 @@ public:
 	bool potwierdz_klucz(int klucz);
 	int  szukaj_indexKlucza(int klucz);
 	int  szukaj_kluczIndexu(int index);
+	void test_potwierdz_klucz(int rozmiar_struktury);
 	//funkcje testowe wyszukiwania klucza
 	//WIP
 
@@ -31,6 +32,9 @@ public:
 	void usun_klucz_poczatek();
 	void usun_klucz_naIndex(int index);
 	void usun_klucz(int klucz);
+	void test_usun_koniec(int rozmiar_struktury);
+	void test_usun_poczatek(int rozmiar_struktury);
+	void test_usun_klucz(int rozmiar_struktury);
 	//fuckje testuj¹ce usuwanie elementów
 	//WIP
 
@@ -47,6 +51,10 @@ public:
 	void menu_szukaj();
 	void menu_wczytaj();
 	void menu_pomiarowe_dodaj();
+
+	void menu_pomiarowe_szukaj();
+
+	void menu_pomiarowe_usun();
 	
 };
 

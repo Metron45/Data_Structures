@@ -53,6 +53,30 @@ void Lista::dodaj_klucz_koniec(int klucz)
 
 }
 
+void Lista::test_dodaj_klucz_koniec(int rozmiar_struktury)
+{
+	int i = 0, temp;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	stworz_losowo(rozmiar_struktury);
+
+	srand(time(NULL));
+	while (i < 100)
+	{
+		temp = rand();
+
+		clock = std::chrono::high_resolution_clock::now();
+		dodaj_klucz_koniec(temp);
+		diff = std::chrono::high_resolution_clock::now() - clock;
+
+		std::cout << diff.count() << std::endl;
+		usun_klucz_koniec();
+		i++;
+	}
+}
+
 void Lista::dodaj_klucz_poczatek(int klucz)
 {
 	
@@ -67,6 +91,30 @@ void Lista::dodaj_klucz_poczatek(int klucz)
 	else {
 		wskaznik_listy = new Lista_Dwukierunkowa;
 		wskaznik_listy->klucz = klucz;
+	}
+}
+
+void Lista::test_dodaj_klucz_poczatek(int rozmiar_struktury)
+{
+	int i = 0, temp;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	stworz_losowo(rozmiar_struktury);
+
+	srand(time(NULL));
+	while (i < 100)
+	{
+		temp = rand();
+
+		clock = std::chrono::high_resolution_clock::now();
+		dodaj_klucz_poczatek(temp);
+		diff = std::chrono::high_resolution_clock::now() - clock;
+
+		std::cout << diff.count() << std::endl;
+		usun_klucz_poczatek();
+		i++;
 	}
 }
 
@@ -101,6 +149,32 @@ void Lista::dodaj_klucz_poKluczu(int klucz_listy, int klucz_wprowadzany){
 	}
 }
 
+void Lista::test_dodaj_klucz_poKluczu(int rozmiar_struktury)
+{
+	int i = 0, temp;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	while (i < rozmiar_struktury) {
+		dodaj_klucz_koniec(i);
+		i++;
+	}
+	i = 0;
+	srand(time(NULL));
+	while (i < 100)
+	{
+
+		clock = std::chrono::high_resolution_clock::now();
+		dodaj_klucz_poKluczu(rozmiar_struktury / 2, rozmiar_struktury / 2);
+		diff = std::chrono::high_resolution_clock::now() - clock;
+
+		std::cout << diff.count() << std::endl;
+		usun_klucz(rozmiar_struktury / 2);
+		i++;
+	}
+}
+
 bool Lista::potwierdz_klucz(int klucz)
 {
 	if (wskaznik_listy != nullptr) {
@@ -117,6 +191,29 @@ bool Lista::potwierdz_klucz(int klucz)
 		}
 	}
 	return false;
+}
+
+void Lista::test_potwierdz_klucz(int rozmiar_struktury)
+{
+	int i = 0, temp;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	stworz_losowo(rozmiar_struktury);
+
+	srand(time(NULL));
+	while (i < 100)
+	{
+		temp = rand();
+
+		clock = std::chrono::high_resolution_clock::now();
+		potwierdz_klucz(-1);
+		diff = std::chrono::high_resolution_clock::now() - clock;
+
+		std::cout << diff.count() << std::endl;
+		i++;
+	}
 }
 
 void Lista::usun_klucz_koniec()
@@ -144,6 +241,30 @@ void Lista::usun_klucz_koniec()
 	}
 }
 
+void Lista::test_usun_koniec(int rozmiar_struktury)
+{
+	int i = 0, temp;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	stworz_losowo(rozmiar_struktury);
+
+	srand(time(NULL));
+	while (i < 100)
+	{
+		temp = rand();
+
+		clock = std::chrono::high_resolution_clock::now();
+		usun_klucz_koniec();
+		diff = std::chrono::high_resolution_clock::now() - clock;
+
+		std::cout << diff.count() << std::endl;
+		dodaj_klucz_koniec(temp);
+		i++;
+	}
+}
+
 void Lista::usun_klucz_poczatek()
 {
 	wskaznik_listy = wskaznik_listy->nastepny;
@@ -151,24 +272,85 @@ void Lista::usun_klucz_poczatek()
 	wskaznik_listy->poprzedni = nullptr;
 }
 
+void Lista::test_usun_poczatek(int rozmiar_struktury)
+{
+	int i = 0, temp;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	stworz_losowo(rozmiar_struktury);
+
+	srand(time(NULL));
+	while (i < 100)
+	{
+		temp = rand();
+
+		clock = std::chrono::high_resolution_clock::now();
+		usun_klucz_poczatek();
+		diff = std::chrono::high_resolution_clock::now() - clock;
+
+		std::cout << diff.count() << std::endl;
+		dodaj_klucz_poczatek(temp);
+		i++;
+	}
+}
+
 void Lista::usun_klucz(int klucz)
 {
 	if (potwierdz_klucz(klucz)) {
+
 		Lista_Dwukierunkowa * wskaznik;
 		wskaznik = wskaznik_listy;
+
 		while (wskaznik->nastepny != nullptr)
 		{
-			if (wskaznik->klucz == klucz) {
-				break;
-			}
+			if (wskaznik->klucz == klucz) {break;}
 			wskaznik = wskaznik->nastepny;
 		}
 
+		if (wskaznik ->poprzedni == nullptr) {
+			usun_klucz_poczatek();
+		}
+		else if (wskaznik->nastepny == nullptr) {
+			usun_klucz_koniec();
+		}
+		else{
 			wskaznik->poprzedni->nastepny = wskaznik->nastepny;
 			wskaznik->nastepny->poprzedni = wskaznik->poprzedni;
 			free(wskaznik);
+		}
 	}
 }
+
+void Lista::test_usun_klucz(int rozmiar_struktury)
+{
+	int i = 0, temp;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	while (i < rozmiar_struktury) {
+		dodaj_klucz_koniec(i);
+		i++;
+	}
+	i = 0;
+
+	srand(time(NULL));
+	
+	while (i < 100)
+	{
+
+		clock = std::chrono::high_resolution_clock::now();
+		usun_klucz(rozmiar_struktury / 2);
+		diff = std::chrono::high_resolution_clock::now() - clock;
+
+		std::cout << diff.count() << std::endl;
+		dodaj_klucz_poKluczu(rozmiar_struktury/2 -1 , rozmiar_struktury/2);
+		i++;
+	}
+}
+
 
 void Lista::reset() {
 	if (wskaznik_listy != nullptr) {
@@ -316,4 +498,71 @@ void Lista::menu_wczytaj()
 		printf("No such file\n");
 	}
 	wypisz();
+}
+
+void Lista::menu_pomiarowe_dodaj()
+{
+	int menu, rozmiar_struktury;
+	printf("\n===Mierz dodawanie liczby===\n");
+	printf("0.Na koniec\n");
+	printf("1.Na poczatek\n");
+	printf("2.Na okreslony index\n");
+	std::cin >> menu;
+	printf("Podaj rozmiar struktury\n");
+	std::cin >> rozmiar_struktury;
+	switch (menu)
+	{
+	case 0:
+
+		test_dodaj_klucz_koniec(rozmiar_struktury);
+		break;
+	case 1:
+
+		test_dodaj_klucz_poczatek(rozmiar_struktury);
+		break;
+	case 2:
+
+		test_dodaj_klucz_poKluczu(rozmiar_struktury);
+		break;
+	default:
+		break;
+	}
+}
+
+void Lista::menu_pomiarowe_szukaj()
+{
+	int menu, rozmiar_struktury;
+	printf("\n===Mierz szukanie liczby===\n");
+	printf("Podaj rozmiar struktury\n");
+	std::cin >> rozmiar_struktury;
+	test_potwierdz_klucz(rozmiar_struktury);
+}
+
+void Lista::menu_pomiarowe_usun()
+{
+	int menu, rozmiar_struktury;
+	printf("\n===Mierz usuwanie liczby===\n");
+	printf("0.Na koncu\n");
+	printf("1.Na poczatku\n");
+	printf("2.Po kluczu\n");
+	std::cin >> menu;
+	printf("Podaj rozmiar struktury\n");
+	std::cin >> rozmiar_struktury;
+	switch (menu)
+	{
+	case 0:
+
+		test_usun_koniec(rozmiar_struktury);
+		break;
+	case 1:
+
+		test_usun_poczatek(rozmiar_struktury);
+		break;
+	case 2:
+
+		test_usun_klucz(rozmiar_struktury);
+		break;
+	default:
+		break;
+	}
 }

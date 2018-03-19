@@ -12,16 +12,16 @@ int main()
 	Tablica tablica;
 	Lista lista;
 	Kopiec kopiec;
-	int menu=0;
+	int menu = 0;
 
-	label_TrybPracy:							//menu TrybPracy
+label_TrybPracy:							//menu TrybPracy
 	printf("===Wybierz tryb Pracy===\n");
 	printf("0.testowy\n");
 	printf("1.pomiarowy\n");
 	printf("2.zakoncz dzialanie programu\n");
 	std::cin >> menu;
 
-	switch(menu){
+	switch (menu) {
 
 	case 0:
 	label_testowy_Struktura:									//meny wyboru struktury do testów
@@ -108,7 +108,7 @@ int main()
 			default:
 				break;
 			}
-			
+
 			break;
 
 		case 3:
@@ -163,10 +163,10 @@ int main()
 		std::cin >> menu;
 
 		switch (menu) {
-		case 0: 
-			goto label_pomiarowy_Struktura;
+		case 0:
+			goto label_TrybPracy;
 		case 1:					//menu wybory pomiarów na tablicy		
-			label_pomiarowy_Tablica:
+		label_pomiarowy_Tablica:
 			printf("===Tablica_Pomiary===\n");
 			printf("0.Powrot\n");
 			printf("1.Dodaj element\n");
@@ -176,33 +176,84 @@ int main()
 			switch (menu) {
 			case 0:
 				tablica.reset();
-				break;
+				goto label_pomiarowy_Struktura;
 			case 1:
 				tablica.menu_pomiarowe_dodaj();
 				break;
 			case 2:
-				tablica.menu_stworz();
+				tablica.menu_pomiarowe_usun();
 				break;
 			case 3:
-				tablica.menu_wczytaj();
+				tablica.menu_pomiarowe_szukaj();
 				break;
 
 			default:
 				break;
 			}
 			goto label_pomiarowy_Tablica;
+		case 2:
+		label_pomiarowy_Lista:
+			printf("===Lista_Pomiary===\n");
+			printf("0.Powrot\n");
+			printf("1.Dodaj element\n");
+			printf("2.Usun element\n");
+			printf("3.Szukaj element\n");
+			std::cin >> menu;
+			switch (menu) {
+			case 0:
+				lista.reset();
+				goto label_pomiarowy_Struktura;
+			case 1:
+				lista.menu_pomiarowe_dodaj();
+				break;
+			case 2:
+				lista.menu_pomiarowe_usun();
+				break;
+			case 3:
+				lista.menu_pomiarowe_szukaj();
+				break;
 
+			default:
+				break;
+			}
+			goto label_pomiarowy_Lista;
 
+		case 3:
+		label_pomiarowy_Kopiec:
+			printf("===Kopiec_Pomiary===\n");
+			printf("0.Powrot\n");
+			printf("1.Dodaj element\n");
+			printf("2.Usun element\n");
+			printf("3.Szukaj element\n");
+			std::cin >> menu;
+			switch (menu) {
+			case 0:
+				lista.reset();
+				goto label_pomiarowy_Struktura;
+			case 1:
+				kopiec.test_push();
+				break;
+			case 2:
+				kopiec.test_pop();
+				break;
+			case 3:
+				kopiec.test_szukaj();
+				break;
+
+			default:
+				break;
+			}
+			goto label_pomiarowy_Kopiec;
 
 		default:
 			goto label_TrybPracy;
 		}
-
-
-		break;
+		 
 	case 2:
-		return 0;
 		break;
+
+
+
 	default:
 		goto label_TrybPracy;
 	}

@@ -1,3 +1,7 @@
-﻿  Main.cpp
+﻿  Kopiec.cpp
+c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\kopiec.cpp(87): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\kopiec.cpp(194): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\kopiec.cpp(187): warning C4101: 'temp': unreferenced local variable
+c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\kopiec.cpp(251): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   SDIZO_Zadanie1.vcxproj -> C:\Users\Metron\Documents\GitHub\SDIZO\SDIZO_Zadanie1\Debug\SDIZO_Zadanie1.exe
   SDIZO_Zadanie1.vcxproj -> C:\Users\Metron\Documents\GitHub\SDIZO\SDIZO_Zadanie1\Debug\SDIZO_Zadanie1.pdb (Full PDB)

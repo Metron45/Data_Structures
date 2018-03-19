@@ -13,12 +13,7 @@ Kopiec::~Kopiec()
 	free(wskaznik_kopca);
 }
 
-void Kopiec::dodaj_klucz_koniec(int klucz)
-{
-	rozmiar_kopca++;
-	wskaznik_kopca = (int*)realloc(wskaznik_kopca, rozmiar_kopca * sizeof(int));
-	wskaznik_kopca[rozmiar_kopca - 1] = klucz;
-}
+
 
 int Kopiec::szukaj_ojca(int index_syna)
 {
@@ -49,6 +44,13 @@ int Kopiec::szukaj_syna_lewy(int index_ojca)
 	}
 }
 
+void Kopiec::dodaj_klucz_koniec(int klucz)
+{
+	rozmiar_kopca++;
+	wskaznik_kopca = (int*)realloc(wskaznik_kopca, rozmiar_kopca * sizeof(int));
+	wskaznik_kopca[rozmiar_kopca - 1] = klucz;
+}
+
 void Kopiec::PUSH(int klucz)
 {
 	dodaj_klucz_koniec(klucz);
@@ -71,15 +73,42 @@ void Kopiec::PUSH(int klucz)
 	}
 }
 
+void Kopiec::test_push()
+{
+	int i = 0, rozmiar_struktury;
+	printf("Podaj rozmiar struktury\n");
+	std::cin >> rozmiar_struktury;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	stworz_losowo(rozmiar_struktury);
+	
+
+	srand(time(NULL));
+	while (i < 100)
+	{
+		
+
+		clock = std::chrono::high_resolution_clock::now();
+		PUSH(2147483647);
+		diff = std::chrono::high_resolution_clock::now() - clock;
+
+		std::cout << diff.count() << std::endl;
+		POP();
+		i++;
+	}
+}
+
 void Kopiec::stworz_losowo(int rozmiar)
 {
 	if (rozmiar > 0) {
 		reset();
+	}
 		srand((int)time(NULL));
 		while (rozmiar_kopca < rozmiar) {
-			dodaj_klucz_koniec(rand());
+			PUSH(rand());
 		}
-	}
+	
 }
 
 void Kopiec::usun_klucz_koniec()
@@ -90,71 +119,100 @@ void Kopiec::usun_klucz_koniec()
 
 void Kopiec::POP()
 {
-	wskaznik_kopca[0] = wskaznik_kopca[rozmiar_kopca - 1];
-	usun_klucz_koniec();
+	if (rozmiar_kopca != 0) {
 
-	int index_ojca = 0, tmp;
-	while (szukaj_syna_lewy(index_ojca) != 0 && szukaj_syna_lewy(index_ojca) != 0) {
+		wskaznik_kopca[0] = wskaznik_kopca[rozmiar_kopca - 1];
+		usun_klucz_koniec();
 
-		if (szukaj_syna_lewy(index_ojca) == 0)
-		{
-			if (wskaznik_kopca[index_ojca] < wskaznik_kopca[szukaj_syna_prawy(index_ojca)])
+		int index_ojca = 0, tmp;
+		while (szukaj_syna_lewy(index_ojca) != 0 && szukaj_syna_lewy(index_ojca) != 0) {
+
+			if (szukaj_syna_lewy(index_ojca) == 0)
 			{
+				if (wskaznik_kopca[index_ojca] < wskaznik_kopca[szukaj_syna_prawy(index_ojca)])
+				{
 
-				tmp = wskaznik_kopca[index_ojca];
-				wskaznik_kopca[index_ojca] = wskaznik_kopca[szukaj_syna_prawy(index_ojca)];
-				wskaznik_kopca[szukaj_syna_prawy(index_ojca)] = tmp;
-			}
-			break;
-		}
-		else if (szukaj_syna_prawy(index_ojca) == 0)
-		{
-			if (wskaznik_kopca[index_ojca] < wskaznik_kopca[szukaj_syna_lewy(index_ojca)])
-			{
-				tmp = wskaznik_kopca[index_ojca];
-				wskaznik_kopca[index_ojca] = wskaznik_kopca[szukaj_syna_lewy(index_ojca)];
-				wskaznik_kopca[szukaj_syna_lewy(index_ojca)] = tmp;
-			}
-			break;
-		}
-		else if (wskaznik_kopca[szukaj_syna_prawy(index_ojca)] < wskaznik_kopca[szukaj_syna_lewy(index_ojca)]) 
-		{
-			if (wskaznik_kopca[index_ojca] < wskaznik_kopca[szukaj_syna_lewy(index_ojca)])
-			{
-				tmp = wskaznik_kopca[index_ojca];
-				wskaznik_kopca[index_ojca] = wskaznik_kopca[szukaj_syna_lewy(index_ojca)];
-				wskaznik_kopca[szukaj_syna_lewy(index_ojca)] = tmp;
-
-				index_ojca = szukaj_syna_lewy(index_ojca);
-			}
-			else {
+					tmp = wskaznik_kopca[index_ojca];
+					wskaznik_kopca[index_ojca] = wskaznik_kopca[szukaj_syna_prawy(index_ojca)];
+					wskaznik_kopca[szukaj_syna_prawy(index_ojca)] = tmp;
+				}
 				break;
 			}
-		}
-		else if (wskaznik_kopca[szukaj_syna_prawy(index_ojca)] > wskaznik_kopca[szukaj_syna_lewy(index_ojca)]) {
-
-			if (wskaznik_kopca[index_ojca] < wskaznik_kopca[szukaj_syna_prawy(index_ojca)])
+			else if (szukaj_syna_prawy(index_ojca) == 0)
 			{
-				tmp = wskaznik_kopca[index_ojca];
-				wskaznik_kopca[index_ojca] = wskaznik_kopca[szukaj_syna_prawy(index_ojca)];
-				wskaznik_kopca[szukaj_syna_prawy(index_ojca)] = tmp;
-
-				index_ojca = szukaj_syna_prawy(index_ojca);
-			}
-			else {
+				if (wskaznik_kopca[index_ojca] < wskaznik_kopca[szukaj_syna_lewy(index_ojca)])
+				{
+					tmp = wskaznik_kopca[index_ojca];
+					wskaznik_kopca[index_ojca] = wskaznik_kopca[szukaj_syna_lewy(index_ojca)];
+					wskaznik_kopca[szukaj_syna_lewy(index_ojca)] = tmp;
+				}
 				break;
 			}
-			
-		}
+			else if (wskaznik_kopca[szukaj_syna_prawy(index_ojca)] <= wskaznik_kopca[szukaj_syna_lewy(index_ojca)])
+			{
+				if (wskaznik_kopca[index_ojca] < wskaznik_kopca[szukaj_syna_lewy(index_ojca)])
+				{
+					tmp = wskaznik_kopca[index_ojca];
+					wskaznik_kopca[index_ojca] = wskaznik_kopca[szukaj_syna_lewy(index_ojca)];
+					wskaznik_kopca[szukaj_syna_lewy(index_ojca)] = tmp;
 
+					index_ojca = szukaj_syna_lewy(index_ojca);
+				}
+				else {
+					break;
+				}
+			}
+			else if (wskaznik_kopca[szukaj_syna_prawy(index_ojca)] > wskaznik_kopca[szukaj_syna_lewy(index_ojca)]) {
+
+				if (wskaznik_kopca[index_ojca] < wskaznik_kopca[szukaj_syna_prawy(index_ojca)])
+				{
+					tmp = wskaznik_kopca[index_ojca];
+					wskaznik_kopca[index_ojca] = wskaznik_kopca[szukaj_syna_prawy(index_ojca)];
+					wskaznik_kopca[szukaj_syna_prawy(index_ojca)] = tmp;
+
+					index_ojca = szukaj_syna_prawy(index_ojca);
+				}
+				else {
+					break;
+				}
+
+			}
+
+		}
 	}
+}
 
+void Kopiec::test_pop()
+{
+	int i = 0, temp, rozmiar_struktury;
+	printf("Podaj rozmiar struktury\n");
+	std::cin >> rozmiar_struktury;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+	stworz_losowo(rozmiar_kopca);
+
+	srand(time(NULL));
+	while (i < 100)
+	{
+		
+		clock = std::chrono::high_resolution_clock::now();
+		POP();
+		diff = std::chrono::high_resolution_clock::now() - clock;
+
+		std::cout << diff.count() << std::endl;
+		PUSH(2147483647);
+		i++;
+	}
 }
 
 void Kopiec::reset()
 {
 	rozmiar_kopca = 0;
 	wskaznik_kopca = (int*)realloc(wskaznik_kopca, rozmiar_kopca * sizeof(int));
+}
+
+bool Kopiec::szukaj_klucz(int klucz) {
+	return szukaj_klucz(klucz, 0);
 }
 
 bool Kopiec::szukaj_klucz(int klucz, int index)
@@ -173,6 +231,36 @@ bool Kopiec::szukaj_klucz(int klucz, int index)
 	}
 
 	return false;
+}
+
+void Kopiec::test_szukaj()
+{
+	int i = 0, temp, rozmiar_struktury;
+	printf("Podaj rozmiar struktury\n");
+	std::cin >> rozmiar_struktury;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	while (i < rozmiar_struktury) {
+		PUSH(i);
+		i++;
+	}
+
+	i = 0;
+	srand(time(NULL));
+	while (i < 100)
+	{
+		temp = rand();
+		
+
+		clock = std::chrono::high_resolution_clock::now();
+		szukaj_klucz(rozmiar_struktury / 2);
+		diff = std::chrono::high_resolution_clock::now() - clock;
+
+		std::cout << diff.count() << std::endl;
+		i++;
+	}
 }
 
 void Kopiec::wypisz()
