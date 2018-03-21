@@ -144,9 +144,6 @@ void Lista::dodaj_klucz_poKluczu(int klucz_listy, int klucz_wprowadzany){
 			wskaznik->nastepny = nowy_element;
 		}
 	}
-	else  {
-		dodaj_klucz_koniec(klucz_wprowadzany);
-	}
 }
 
 void Lista::test_dodaj_klucz_poKluczu(int rozmiar_struktury)
@@ -218,9 +215,10 @@ void Lista::test_potwierdz_klucz(int rozmiar_struktury)
 
 void Lista::usun_klucz_koniec()
 {
-	Lista_Dwukierunkowa * wskaznik;
+	
 	if (wskaznik_listy != nullptr) {
 
+		Lista_Dwukierunkowa * wskaznik;
 		wskaznik = wskaznik_listy;
 
 		while (wskaznik->nastepny != nullptr)
@@ -267,9 +265,18 @@ void Lista::test_usun_koniec(int rozmiar_struktury)
 
 void Lista::usun_klucz_poczatek()
 {
-	wskaznik_listy = wskaznik_listy->nastepny;
-	free(wskaznik_listy->poprzedni);
-	wskaznik_listy->poprzedni = nullptr;
+	if (wskaznik_listy != nullptr) {
+		if (wskaznik_listy->nastepny != nullptr) {
+			wskaznik_listy = wskaznik_listy->nastepny;
+			free(wskaznik_listy->poprzedni);
+			wskaznik_listy->poprzedni = nullptr;
+		}
+		else {
+			free(wskaznik_listy);
+			wskaznik_listy = nullptr;
+		}
+		
+	}
 }
 
 void Lista::test_usun_poczatek(int rozmiar_struktury)
@@ -298,7 +305,7 @@ void Lista::test_usun_poczatek(int rozmiar_struktury)
 
 void Lista::usun_klucz(int klucz)
 {
-	if (potwierdz_klucz(klucz)) {
+	if (potwierdz_klucz(klucz) && wskaznik_listy!=nullptr) {
 
 		Lista_Dwukierunkowa * wskaznik;
 		wskaznik = wskaznik_listy;
@@ -312,6 +319,7 @@ void Lista::usun_klucz(int klucz)
 		if (wskaznik ->poprzedni == nullptr) {
 			usun_klucz_poczatek();
 		}
+
 		else if (wskaznik->nastepny == nullptr) {
 			usun_klucz_koniec();
 		}

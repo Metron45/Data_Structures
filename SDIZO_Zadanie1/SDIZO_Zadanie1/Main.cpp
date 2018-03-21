@@ -48,7 +48,7 @@ label_TrybPracy:							//menu TrybPracy
 			switch (menu) {
 			case 0:
 				tablica.reset();
-				break;
+				goto label_testowy_Struktura;
 			case 1:
 				tablica.wypisz();
 				break;

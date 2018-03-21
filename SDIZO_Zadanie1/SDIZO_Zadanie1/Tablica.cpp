@@ -166,20 +166,24 @@ void Tablica::test_potwierdz_klucz(int rozmiar_struktury)
 
 void Tablica::usun_klucz_koniec()
 {
-	rozmiar_tablicy--;
-	wskaznik_tablicy = (int*)realloc(wskaznik_tablicy, rozmiar_tablicy * sizeof(int));
+	if (rozmiar_tablicy > 0) {
+		rozmiar_tablicy--;
+		wskaznik_tablicy = (int*)realloc(wskaznik_tablicy, rozmiar_tablicy * sizeof(int));
+	}
 }
 
 void Tablica::usun_klucz_poczatek()
 {
-	memmove(wskaznik_tablicy, wskaznik_tablicy+1, (rozmiar_tablicy - 1) * sizeof(int));
-	rozmiar_tablicy--;
-	wskaznik_tablicy = (int*)realloc(wskaznik_tablicy, rozmiar_tablicy * sizeof(int));
+	if (rozmiar_tablicy > 0) {
+		memmove(wskaznik_tablicy, wskaznik_tablicy + 1, (rozmiar_tablicy - 1) * sizeof(int));
+		rozmiar_tablicy--;
+		wskaznik_tablicy = (int*)realloc(wskaznik_tablicy, rozmiar_tablicy * sizeof(int));
+	}
 }
 
 void Tablica::usun_klucz_naIndex(int index)
 {
-	if (index < rozmiar_tablicy && index >= 0) {
+	if (index < rozmiar_tablicy && index >= 0 && rozmiar_tablicy>0) {
 		rozmiar_tablicy--;
 		memmove(wskaznik_tablicy + index, wskaznik_tablicy + index +1, (rozmiar_tablicy - index) * sizeof(int));
 		wskaznik_tablicy = (int*)realloc(wskaznik_tablicy, rozmiar_tablicy * sizeof(int));

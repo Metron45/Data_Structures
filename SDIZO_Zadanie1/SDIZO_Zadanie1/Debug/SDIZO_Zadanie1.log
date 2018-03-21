@@ -1,7 +1,12 @@
-﻿  Kopiec.cpp
-c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\kopiec.cpp(87): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\kopiec.cpp(194): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\kopiec.cpp(187): warning C4101: 'temp': unreferenced local variable
-c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\kopiec.cpp(251): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+﻿  Tablica.cpp
+c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\tablica.cpp(52): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\tablica.cpp(76): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\tablica.cpp(101): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\tablica.cpp(93): warning C4101: 'quantity': unreferenced local variable
+c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\tablica.cpp(153): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\tablica.cpp(209): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\tablica.cpp(233): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\tablica.cpp(458): warning C4101: 'menu': unreferenced local variable
+c:\users\metron\documents\github\sdizo\sdizo_zadanie1\sdizo_zadanie1\tablica.cpp(142): warning C4715: 'Tablica::szukaj_kluczIndexu': not all control paths return a value
   SDIZO_Zadanie1.vcxproj -> C:\Users\Metron\Documents\GitHub\SDIZO\SDIZO_Zadanie1\Debug\SDIZO_Zadanie1.exe
   SDIZO_Zadanie1.vcxproj -> C:\Users\Metron\Documents\GitHub\SDIZO\SDIZO_Zadanie1\Debug\SDIZO_Zadanie1.pdb (Full PDB)
