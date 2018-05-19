@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="GrafListowy.h" />
     <ClInclude Include="GrafMacierzowy.h" />
+    <ClInclude Include="ListaKrawedzi.h" />
     <ClInclude Include="SDIZO_Zadanie2.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClCompile Include="GrafListowy.cpp" />
     <ClCompile Include="GrafMacierzowy.cpp" />
+    <ClCompile Include="ListaKrawedzi.cpp" />
     <ClCompile Include="SDIZO_Zadanie2.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

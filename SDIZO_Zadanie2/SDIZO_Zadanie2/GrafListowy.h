@@ -23,5 +23,9 @@ public:
 	void stworz_minimalne(int rozmiar);
 	void stworz_losowe(int rozmiar, float gestosc);
 	void wczytaj();
+	ListaKrawedzi algorytm_Prima();
+	ListaKrawedzi algorytm_Kruskala();
+	ListaKrawedzi algorytm_Djikstry(int wierzcholek_poczatkowy, int wierzcholek_szukany);
+	ListaKrawedzi algorytm_Bellmana(int wierzcholek_poczatkowy, int wierzcholek_szukany);
 };
 

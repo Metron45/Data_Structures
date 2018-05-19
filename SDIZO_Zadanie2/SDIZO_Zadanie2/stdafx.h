@@ -21,5 +21,6 @@
 #include <sstream>
 #include <algorithm>
 #include <iterator>
+#include "ListaKrawedzi.h"
 
 // TODO: reference additional headers your program requires here

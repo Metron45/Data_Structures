@@ -13,6 +13,7 @@ GrafMacierzowy::GrafMacierzowy()
 GrafMacierzowy::~GrafMacierzowy()
 {
 	free(macierz);
+	free(wagi_krawedzi);
 }
 
 void GrafMacierzowy::wypisz()
@@ -76,7 +77,7 @@ void GrafMacierzowy::stworz_minimalne(int rozmiar)
 	while (ilosc_wierzcholkow < rozmiar) {
 		dodaj_wierzcholek();
 		if (ilosc_wierzcholkow > 1) {
-			dodaj_krawedz(rand() % (ilosc_wierzcholkow - 1), ilosc_wierzcholkow - 1, rand());
+			dodaj_krawedz(rand() % (ilosc_wierzcholkow - 1), ilosc_wierzcholkow - 1, rand()%10000);
 		}
 	}
 }
@@ -95,7 +96,7 @@ void GrafMacierzowy::stworz_losowe(int rozmiar, float gestosc)
 		do {
 			wierzcholek2 = rand() % ilosc_wierzcholkow;
 		} while (wierzcholek2 == wierzcholek1);
-		dodaj_krawedz(wierzcholek1, wierzcholek2, rand());
+		dodaj_krawedz(wierzcholek1, wierzcholek2, rand()%10000);
 
 		iloscKrawedzi++;
 		gestoscObecna = (float)(2 * iloscKrawedzi) / (float)(ilosc_wierzcholkow*(ilosc_wierzcholkow - 1));
@@ -147,3 +148,302 @@ void GrafMacierzowy::wczytaj()
 	}
 }
 
+ListaKrawedzi GrafMacierzowy::algorytm_Prima()
+{
+		ListaKrawedzi lista_priorytetowa, lista_koncowa;
+		bool * lista_wierzcholkow, *lista_krawedzi, warunek_konca=false;
+		int kr_pocz, kr_kon, kr_waga;
+
+		//ustalenie tablicy z do sprawdzania warunku konca
+		lista_wierzcholkow = (bool*)calloc(ilosc_wierzcholkow, sizeof(bool));
+		for (int index = 0; index < ilosc_wierzcholkow; index++) {
+			lista_wierzcholkow[index] = false;
+		}
+		lista_wierzcholkow[0]=true;
+		
+		lista_krawedzi = (bool*)calloc(ilosc_krawedzi, sizeof(bool));
+		for (int index = 0; index < ilosc_krawedzi; index++) {
+			lista_krawedzi[index] = false;
+		}
+
+		//dodanie krawedzi pierwszego wierzcholka
+		for (int index_kr = 0; index_kr < ilosc_krawedzi; index_kr++) {
+			if (macierz[0][index_kr] != 0) {
+				kr_pocz = 0;
+				kr_waga = wagi_krawedzi[index_kr];
+				for (int index_wr = 1; index_wr < ilosc_wierzcholkow; index_wr++) {
+					if (macierz[index_wr][index_kr] != 0) {
+						kr_kon = index_wr;
+						break;
+					}
+				}
+				std::cout << "Dodaje do listy Priorytetowej: Od: " << std::setw(3) << kr_pocz
+					<< " Do: " << std::setw(3) << kr_kon
+					<< " Waga: " << std::setw(3) << kr_waga << std::endl;
+				lista_krawedzi[index_kr] = true;
+				lista_priorytetowa.dodaj_krawedz(kr_pocz, kr_kon, kr_waga);
+			}
+		}
+		std::cout << "Lista Priorytetowa Poczatkowa: " << std::endl;
+		lista_priorytetowa.wypisz();
+
+		while (warunek_konca == false) {
+			//znalezienie najmniejszej wagi krawedzi
+			kr_kon  = lista_priorytetowa.lista[0].wierzcholek_nastepny;
+			kr_pocz = lista_priorytetowa.lista[0].wierzcholek_poprzedni;
+			kr_waga = lista_priorytetowa.lista[0].waga;
+			for (int index = 0; index < lista_priorytetowa.ilosc_krawedzi; index++) {
+				if (kr_waga > lista_priorytetowa.lista[index].waga) {
+					kr_kon = lista_priorytetowa.lista[index].wierzcholek_nastepny;
+					kr_pocz = lista_priorytetowa.lista[index].wierzcholek_poprzedni;
+					kr_waga = lista_priorytetowa.lista[index].waga;
+				}
+			}
+			lista_priorytetowa.usun_krawedz(kr_pocz, kr_kon, kr_waga);
+			//dodanie do listy koncowej
+			std::cout << "Dodaje do listy Koncowej: Od: " << std::setw(3) << kr_pocz 
+					  << " Do: " << std::setw(3) << kr_kon 
+					  << " Waga: " << std::setw(3) << kr_waga << std::endl;
+			lista_koncowa.dodaj_krawedz(kr_pocz, kr_kon, kr_waga);
+			//dodanie wierzcholka
+			lista_wierzcholkow[kr_kon] = true;
+			std::cout << "Odznaczam wierzcholek : " << kr_kon << std::endl;
+
+			//sprawdzenie warunku konca
+			warunek_konca = true;
+			for (int index = 0; index < ilosc_wierzcholkow; index++) {
+				if (!lista_wierzcholkow[index]) {
+					warunek_konca = false;
+					break;
+				}
+			}
+			if (warunek_konca == true) {
+				break;
+			}
+
+			//dodanie do listy priorytetowej
+			for (int index_kr = 0, index_wierzcholka = kr_kon; index_kr < ilosc_krawedzi; index_kr++) {
+				if (macierz[index_wierzcholka][index_kr] != 0 && lista_krawedzi[index_kr]==false) {
+					kr_pocz = index_wierzcholka;
+					kr_waga = wagi_krawedzi[index_kr];
+					for (int index_wr = 1; index_wr < ilosc_wierzcholkow; index_wr++) {
+						if (macierz[index_wr][index_kr] != 0 && index_wr!=index_wierzcholka) {
+							kr_kon = index_wr;
+							break;
+						}
+					}
+						lista_krawedzi[index_kr] = true;
+						lista_priorytetowa.dodaj_krawedz(kr_pocz, kr_kon, kr_waga);
+					
+				}
+			}
+			std::cout << "Lista Priorytetowa: " << std::endl;
+			lista_priorytetowa.wypisz();
+
+			
+		}
+		std::cout << "Lista Koñcowa: " << std::endl;
+		lista_koncowa.wypisz();
+		return lista_koncowa;	
+}
+
+ListaKrawedzi GrafMacierzowy::algorytm_Kruskala()
+{
+	ListaKrawedzi priorytetowa, koncowa;
+	int kr_pocz, kr_kon, kr_waga;
+	bool bauble_boost, warunek_konca;
+	int * wierzcholki, kolor_wolny, kolor_temp;
+
+	//ustawienie kolejki priorytetowej
+	for (int index_krawedzi = 0; index_krawedzi < ilosc_krawedzi; index_krawedzi++) {
+		for (int index_w = 0; index_w < ilosc_wierzcholkow; index_w++) {
+			if (macierz[index_w][index_krawedzi] == 1) {
+				kr_pocz = index_w;
+			}
+			else if (macierz[index_w][index_krawedzi] == -1) {
+				kr_kon = index_w;
+			}
+		}
+		priorytetowa.dodaj_krawedz(kr_pocz, kr_kon, wagi_krawedzi[index_krawedzi]);
+	}
+	for (int i = 0; i < ilosc_krawedzi; i++) {
+		bauble_boost = true;
+		for (int j = 0; j < ilosc_krawedzi - i - 1; j++) {
+			if (priorytetowa.lista[j].waga > priorytetowa.lista[j + 1].waga) {
+				kr_pocz = priorytetowa.lista[j].wierzcholek_poprzedni;
+				kr_kon = priorytetowa.lista[j].wierzcholek_nastepny;
+				kr_waga = priorytetowa.lista[j].waga;
+				priorytetowa.lista[j] = priorytetowa.lista[j + 1];
+				priorytetowa.lista[j + 1].wierzcholek_poprzedni = kr_pocz;
+				priorytetowa.lista[j + 1].wierzcholek_nastepny = kr_kon;
+				priorytetowa.lista[j + 1].waga = kr_waga;
+				bauble_boost = false;
+			}
+		}
+		if (bauble_boost == true) {
+			break;
+		}
+	}
+	//'kolorowanie' grafu
+	kolor_wolny = 0;
+	wierzcholki = (int *)calloc(ilosc_wierzcholkow, sizeof(int));
+	for (int index = 0; index < ilosc_wierzcholkow; index++) {
+		wierzcholki[index] = kolor_wolny;
+	}
+	kolor_wolny++;
+	//Algorytm Kruskala
+	warunek_konca = false;
+	for (int index_pr = 0; warunek_konca == false; index_pr++) {
+		if (wierzcholki[priorytetowa.lista[index_pr].wierzcholek_poprzedni] == 0 && wierzcholki[priorytetowa.lista[index_pr].wierzcholek_nastepny] == 0) {
+			wierzcholki[priorytetowa.lista[index_pr].wierzcholek_poprzedni] = kolor_wolny;
+			wierzcholki[priorytetowa.lista[index_pr].wierzcholek_nastepny] = kolor_wolny;
+			kolor_wolny++;
+			koncowa.dodaj_krawedz(priorytetowa.lista[index_pr].wierzcholek_poprzedni, priorytetowa.lista[index_pr].wierzcholek_nastepny, priorytetowa.lista[index_pr].waga);
+		}
+		else if (wierzcholki[priorytetowa.lista[index_pr].wierzcholek_poprzedni] == 0) {
+			wierzcholki[priorytetowa.lista[index_pr].wierzcholek_poprzedni] = wierzcholki[priorytetowa.lista[index_pr].wierzcholek_nastepny];
+			koncowa.dodaj_krawedz(priorytetowa.lista[index_pr].wierzcholek_poprzedni, priorytetowa.lista[index_pr].wierzcholek_nastepny, priorytetowa.lista[index_pr].waga);
+		}
+		else if (wierzcholki[priorytetowa.lista[index_pr].wierzcholek_nastepny] == 0) {
+			wierzcholki[priorytetowa.lista[index_pr].wierzcholek_nastepny] = wierzcholki[priorytetowa.lista[index_pr].wierzcholek_poprzedni];
+			koncowa.dodaj_krawedz(priorytetowa.lista[index_pr].wierzcholek_poprzedni, priorytetowa.lista[index_pr].wierzcholek_nastepny, priorytetowa.lista[index_pr].waga);
+		}
+		else if (wierzcholki[priorytetowa.lista[index_pr].wierzcholek_poprzedni] != wierzcholki[priorytetowa.lista[index_pr].wierzcholek_nastepny]) {
+			kolor_temp = wierzcholki[priorytetowa.lista[index_pr].wierzcholek_nastepny];
+			for (int index = 0; index < ilosc_wierzcholkow; index++) {
+				if (wierzcholki[index] == kolor_temp) {
+					wierzcholki[index] = wierzcholki[priorytetowa.lista[index_pr].wierzcholek_poprzedni];
+				}
+			}
+			koncowa.dodaj_krawedz(priorytetowa.lista[index_pr].wierzcholek_poprzedni, priorytetowa.lista[index_pr].wierzcholek_nastepny, priorytetowa.lista[index_pr].waga);
+		}
+		//sprawdzenie warunku konca
+		if (wierzcholki[0] > 0) {
+			warunek_konca = true;
+			kolor_temp = wierzcholki[0];
+			for (int index = 1; index < ilosc_wierzcholkow; index++) {
+				if (wierzcholki[index] != kolor_temp) {
+					warunek_konca = false;
+					break;
+				}
+			}
+		}
+
+	}
+
+
+	return koncowa;
+}
+
+ListaKrawedzi GrafMacierzowy::algorytm_Djikstry(int wierzcholek_poczatkowy, int wierzcholek_szukany) {
+	ListaKrawedzi koncowa;
+	int *tablica_wag, *tablica_poprzednikow;
+	bool warunek_konca = false, *tablica_rozluznionych;
+	int wierzcho³ek_obecny;
+
+	tablica_poprzednikow = (int*)calloc(ilosc_wierzcholkow, sizeof(int));
+	tablica_wag = (int*)calloc(ilosc_wierzcholkow, sizeof(int));
+	tablica_rozluznionych = (bool*)calloc(ilosc_wierzcholkow, sizeof(bool));
+	for (int index = 0; index < ilosc_wierzcholkow; index++) {
+		tablica_poprzednikow[index] = -1;
+		tablica_wag[index] = -1;
+		tablica_rozluznionych[index] = false;
+		//-1 jest odpowiednikiem NULL i inf
+	}
+	tablica_wag[wierzcholek_poczatkowy] = 0;
+	tablica_poprzednikow[wierzcholek_poczatkowy] = wierzcholek_poczatkowy;
+
+	while (warunek_konca == false) {
+		for (int index_wr = 0; index_wr < ilosc_wierzcholkow; index_wr++) {
+			if (tablica_poprzednikow[index_wr] != -1 && tablica_rozluznionych[index_wr] == false) {
+				for (int nastepny, index_kr = 0; index_kr < ilosc_krawedzi; index_kr++) {
+					if (macierz[index_wr][index_kr] == 1) {
+						for (int index = 0; index < ilosc_wierzcholkow; index++) {
+							if (macierz[index][index_kr] == -1) {
+								nastepny = index;
+								break;
+							}
+						}
+						if (tablica_wag[nastepny] == -1 || tablica_wag[nastepny] > tablica_wag[index_wr] + wagi_krawedzi[index_kr]) {
+
+							tablica_wag[nastepny] = tablica_wag[index_wr] + wagi_krawedzi[index_kr];
+							tablica_poprzednikow[nastepny] = index_wr;
+
+						}
+					}
+				}
+				tablica_rozluznionych[index_wr] = true;
+			}
+		}
+
+
+		if (tablica_poprzednikow[wierzcholek_szukany] != -1) {
+			warunek_konca = true;
+			for (int index = 0; index < ilosc_wierzcholkow; index++) {
+				if (tablica_rozluznionych[index] != true && tablica_wag[index] < tablica_wag[wierzcholek_szukany]) {
+					warunek_konca = false;
+				}
+			}
+		}
+	}
+
+	wierzcho³ek_obecny = wierzcholek_szukany;
+	do {
+		koncowa.dodaj_krawedz(tablica_poprzednikow[wierzcho³ek_obecny], wierzcho³ek_obecny, tablica_wag[wierzcho³ek_obecny] - tablica_wag[tablica_poprzednikow[wierzcho³ek_obecny]]);
+		wierzcho³ek_obecny = tablica_poprzednikow[wierzcho³ek_obecny];
+	} while (wierzcho³ek_obecny != tablica_poprzednikow[wierzcho³ek_obecny]);
+
+
+
+	return koncowa;
+}
+
+ListaKrawedzi GrafMacierzowy::algorytm_Bellmana(int wierzcholek_poczatkowy, int wierzcholek_szukany) {
+
+	ListaKrawedzi koncowa;
+	int *tablica_wag, *tablica_poprzednikow;
+
+	tablica_poprzednikow = (int*)calloc(ilosc_wierzcholkow, sizeof(int));
+	tablica_wag = (int*)calloc(ilosc_wierzcholkow, sizeof(int));
+	for (int index = 0; index < ilosc_wierzcholkow; index++) {
+		tablica_poprzednikow[index] = -1;
+		tablica_wag[index] = -1;
+		//-1 jest odpowiednikiem NULL i inf
+	}
+
+	tablica_wag[wierzcholek_poczatkowy] = 0;
+	tablica_poprzednikow[wierzcholek_poczatkowy] = wierzcholek_poczatkowy;
+
+	for (int index = 0; index < ilosc_wierzcholkow - 1; index++) {
+
+		for (int nastepny,poprzedni,index_kr = 0; index_kr < ilosc_krawedzi; index_kr++) {
+
+			for (int index = 0; index < ilosc_wierzcholkow; index++) {
+				if (macierz[index][index_kr] == -1) {
+					nastepny = index;
+				}
+				else if (macierz[index][index_kr] == 1) {
+					poprzedni = index;
+				}
+			}
+
+
+			if (tablica_wag[nastepny] == -1 || tablica_wag[nastepny] > tablica_wag[poprzedni] + wagi_krawedzi[index_kr]) {
+
+				tablica_wag[nastepny] = tablica_wag[poprzedni] + wagi_krawedzi[index_kr];
+				tablica_poprzednikow[nastepny] = poprzedni;
+
+			}
+		}
+
+
+	}
+
+	int wierzcho³ek_obecny = wierzcholek_szukany;
+	do {
+		koncowa.dodaj_krawedz(tablica_poprzednikow[wierzcho³ek_obecny], wierzcho³ek_obecny, tablica_wag[wierzcho³ek_obecny] - tablica_wag[tablica_poprzednikow[wierzcho³ek_obecny]]);
+		wierzcho³ek_obecny = tablica_poprzednikow[wierzcho³ek_obecny];
+	} while (wierzcho³ek_obecny != tablica_poprzednikow[wierzcho³ek_obecny]);
+
+	return koncowa;
+}
