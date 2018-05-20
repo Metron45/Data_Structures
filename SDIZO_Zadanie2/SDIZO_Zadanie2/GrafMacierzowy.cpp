@@ -150,16 +150,26 @@ void GrafMacierzowy::wczytaj()
 
 ListaKrawedzi GrafMacierzowy::algorytm_Prima()
 {
-		ListaKrawedzi lista_priorytetowa, lista_koncowa;
+	return algorytm_Prima(0);
+}
+
+ListaKrawedzi GrafMacierzowy::algorytm_Prima(int wierzcholek_poczatkowy)
+{
+		ListaKrawedzi priorytetowa, koncowa;
 		bool * lista_wierzcholkow, *lista_krawedzi, warunek_konca=false;
 		int kr_pocz, kr_kon, kr_waga;
+
+		if (wierzcholek_poczatkowy < 0 ||  wierzcholek_poczatkowy >= ilosc_wierzcholkow) {
+			std::cout << "Bledny zakres" << std::endl;
+			return koncowa;
+		}
 
 		//ustalenie tablicy z do sprawdzania warunku konca
 		lista_wierzcholkow = (bool*)calloc(ilosc_wierzcholkow, sizeof(bool));
 		for (int index = 0; index < ilosc_wierzcholkow; index++) {
 			lista_wierzcholkow[index] = false;
 		}
-		lista_wierzcholkow[0]=true;
+		lista_wierzcholkow[wierzcholek_poczatkowy]=true;
 		
 		lista_krawedzi = (bool*)calloc(ilosc_krawedzi, sizeof(bool));
 		for (int index = 0; index < ilosc_krawedzi; index++) {
@@ -168,8 +178,8 @@ ListaKrawedzi GrafMacierzowy::algorytm_Prima()
 
 		//dodanie krawedzi pierwszego wierzcholka
 		for (int index_kr = 0; index_kr < ilosc_krawedzi; index_kr++) {
-			if (macierz[0][index_kr] != 0) {
-				kr_pocz = 0;
+			if (macierz[wierzcholek_poczatkowy][index_kr] != 0) {
+				kr_pocz = wierzcholek_poczatkowy;
 				kr_waga = wagi_krawedzi[index_kr];
 				for (int index_wr = 1; index_wr < ilosc_wierzcholkow; index_wr++) {
 					if (macierz[index_wr][index_kr] != 0) {
@@ -177,38 +187,30 @@ ListaKrawedzi GrafMacierzowy::algorytm_Prima()
 						break;
 					}
 				}
-				std::cout << "Dodaje do listy Priorytetowej: Od: " << std::setw(3) << kr_pocz
-					<< " Do: " << std::setw(3) << kr_kon
-					<< " Waga: " << std::setw(3) << kr_waga << std::endl;
+
 				lista_krawedzi[index_kr] = true;
-				lista_priorytetowa.dodaj_krawedz(kr_pocz, kr_kon, kr_waga);
+				priorytetowa.dodaj_krawedz(kr_pocz, kr_kon, kr_waga);
 			}
 		}
-		std::cout << "Lista Priorytetowa Poczatkowa: " << std::endl;
-		lista_priorytetowa.wypisz();
+
 
 		while (warunek_konca == false) {
 			//znalezienie najmniejszej wagi krawedzi
-			kr_kon  = lista_priorytetowa.lista[0].wierzcholek_nastepny;
-			kr_pocz = lista_priorytetowa.lista[0].wierzcholek_poprzedni;
-			kr_waga = lista_priorytetowa.lista[0].waga;
-			for (int index = 0; index < lista_priorytetowa.ilosc_krawedzi; index++) {
-				if (kr_waga > lista_priorytetowa.lista[index].waga) {
-					kr_kon = lista_priorytetowa.lista[index].wierzcholek_nastepny;
-					kr_pocz = lista_priorytetowa.lista[index].wierzcholek_poprzedni;
-					kr_waga = lista_priorytetowa.lista[index].waga;
+			kr_kon  = priorytetowa.lista[0].wierzcholek_nastepny;
+			kr_pocz = priorytetowa.lista[0].wierzcholek_poprzedni;
+			kr_waga = priorytetowa.lista[0].waga;
+			for (int index = 0; index < priorytetowa.ilosc_krawedzi; index++) {
+				if (kr_waga > priorytetowa.lista[index].waga) {
+					kr_kon = priorytetowa.lista[index].wierzcholek_nastepny;
+					kr_pocz = priorytetowa.lista[index].wierzcholek_poprzedni;
+					kr_waga = priorytetowa.lista[index].waga;
 				}
 			}
-			lista_priorytetowa.usun_krawedz(kr_pocz, kr_kon, kr_waga);
+			priorytetowa.usun_krawedz(kr_pocz, kr_kon, kr_waga);
 			//dodanie do listy koncowej
-			std::cout << "Dodaje do listy Koncowej: Od: " << std::setw(3) << kr_pocz 
-					  << " Do: " << std::setw(3) << kr_kon 
-					  << " Waga: " << std::setw(3) << kr_waga << std::endl;
-			lista_koncowa.dodaj_krawedz(kr_pocz, kr_kon, kr_waga);
+			koncowa.dodaj_krawedz(kr_pocz, kr_kon, kr_waga);
 			//dodanie wierzcholka
 			lista_wierzcholkow[kr_kon] = true;
-			std::cout << "Odznaczam wierzcholek : " << kr_kon << std::endl;
-
 			//sprawdzenie warunku konca
 			warunek_konca = true;
 			for (int index = 0; index < ilosc_wierzcholkow; index++) {
@@ -220,7 +222,7 @@ ListaKrawedzi GrafMacierzowy::algorytm_Prima()
 			if (warunek_konca == true) {
 				break;
 			}
-
+	
 			//dodanie do listy priorytetowej
 			for (int index_kr = 0, index_wierzcholka = kr_kon; index_kr < ilosc_krawedzi; index_kr++) {
 				if (macierz[index_wierzcholka][index_kr] != 0 && lista_krawedzi[index_kr]==false) {
@@ -233,18 +235,18 @@ ListaKrawedzi GrafMacierzowy::algorytm_Prima()
 						}
 					}
 						lista_krawedzi[index_kr] = true;
-						lista_priorytetowa.dodaj_krawedz(kr_pocz, kr_kon, kr_waga);
-					
+						priorytetowa.dodaj_krawedz(kr_pocz, kr_kon, kr_waga);
 				}
 			}
-			std::cout << "Lista Priorytetowa: " << std::endl;
-			lista_priorytetowa.wypisz();
-
-			
+			if (priorytetowa.lista == NULL) {
+				std::cout << "Wystapil blad: Nie mozliwym jest stworzenie drzewa MST" << std::endl;
+				break;
+			}
 		}
-		std::cout << "Lista Koñcowa: " << std::endl;
-		lista_koncowa.wypisz();
-		return lista_koncowa;	
+
+	
+
+		return koncowa;	
 }
 
 ListaKrawedzi GrafMacierzowy::algorytm_Kruskala()
@@ -335,11 +337,21 @@ ListaKrawedzi GrafMacierzowy::algorytm_Kruskala()
 	return koncowa;
 }
 
+ListaKrawedzi GrafMacierzowy::algorytm_Djikstry()
+{
+	return algorytm_Djikstry(0, ilosc_wierzcholkow - 1);
+}
+
 ListaKrawedzi GrafMacierzowy::algorytm_Djikstry(int wierzcholek_poczatkowy, int wierzcholek_szukany) {
 	ListaKrawedzi koncowa;
 	int *tablica_wag, *tablica_poprzednikow;
 	bool warunek_konca = false, *tablica_rozluznionych;
 	int wierzcho³ek_obecny;
+
+	if (wierzcholek_poczatkowy < 0 || wierzcholek_szukany < 0 || wierzcholek_szukany >= ilosc_wierzcholkow || wierzcholek_poczatkowy >= ilosc_wierzcholkow) {
+		std::cout << "Bledny zakres" << std::endl;
+		return koncowa;
+	}
 
 	tablica_poprzednikow = (int*)calloc(ilosc_wierzcholkow, sizeof(int));
 	tablica_wag = (int*)calloc(ilosc_wierzcholkow, sizeof(int));
@@ -398,10 +410,20 @@ ListaKrawedzi GrafMacierzowy::algorytm_Djikstry(int wierzcholek_poczatkowy, int 
 	return koncowa;
 }
 
+ListaKrawedzi GrafMacierzowy::algorytm_Bellmana()
+{
+	return algorytm_Bellmana(0, ilosc_wierzcholkow - 1);
+}
+
 ListaKrawedzi GrafMacierzowy::algorytm_Bellmana(int wierzcholek_poczatkowy, int wierzcholek_szukany) {
 
 	ListaKrawedzi koncowa;
 	int *tablica_wag, *tablica_poprzednikow;
+
+	if (wierzcholek_poczatkowy < 0 || wierzcholek_szukany < 0 || wierzcholek_szukany >= ilosc_wierzcholkow || wierzcholek_poczatkowy >= ilosc_wierzcholkow) {
+		std::cout << "Bledny zakres" << std::endl;
+		return koncowa;
+	}
 
 	tablica_poprzednikow = (int*)calloc(ilosc_wierzcholkow, sizeof(int));
 	tablica_wag = (int*)calloc(ilosc_wierzcholkow, sizeof(int));
@@ -443,7 +465,82 @@ ListaKrawedzi GrafMacierzowy::algorytm_Bellmana(int wierzcholek_poczatkowy, int 
 	do {
 		koncowa.dodaj_krawedz(tablica_poprzednikow[wierzcho³ek_obecny], wierzcho³ek_obecny, tablica_wag[wierzcho³ek_obecny] - tablica_wag[tablica_poprzednikow[wierzcho³ek_obecny]]);
 		wierzcho³ek_obecny = tablica_poprzednikow[wierzcho³ek_obecny];
-	} while (wierzcho³ek_obecny != tablica_poprzednikow[wierzcho³ek_obecny]);
+	} while (wierzcho³ek_obecny != tablica_poprzednikow[wierzcho³ek_obecny]&& wierzcho³ek_obecny!= -1);
+	if (wierzcho³ek_obecny == -1) {
+		std::cout << "Nie Powiodlo sie znalezienie sciezki." << std::endl;
+	}
 
 	return koncowa;
+}
+
+void GrafMacierzowy::test_algorytm_Prima(int rozmiar, float gestosc) {
+	int temp;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	stworz_losowe(rozmiar,gestosc);
+
+	srand(time(NULL));
+	for (int i = 0; i < 100; i++) {
+		temp = rand();
+		clock = std::chrono::high_resolution_clock::now();
+		algorytm_Prima();
+		diff = std::chrono::high_resolution_clock::now() - clock;
+		std::cout << diff.count() << std::endl;
+	}
+}
+
+void GrafMacierzowy::test_algorytm_Kruskala(int rozmiar, float gestosc) {
+	int temp;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	stworz_losowe(rozmiar, gestosc);
+
+	srand(time(NULL));
+	for (int i = 0; i < 100; i++) {
+		temp = rand();
+		clock = std::chrono::high_resolution_clock::now();
+		algorytm_Kruskala();
+		diff = std::chrono::high_resolution_clock::now() - clock;
+		std::cout << diff.count() << std::endl;
+	}
+}
+
+void GrafMacierzowy::test_algorytm_Djikstry(int rozmiar, float gestosc) {
+	int temp;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	stworz_losowe(rozmiar, gestosc);
+
+	srand(time(NULL));
+	for (int i = 0; i < 100; i++) {
+		temp = rand();
+		clock = std::chrono::high_resolution_clock::now();
+		algorytm_Djikstry();
+		diff = std::chrono::high_resolution_clock::now() - clock;
+		std::cout << diff.count() << std::endl;
+	}
+}
+
+void GrafMacierzowy::test_algorytm_Bellmana(int rozmiar, float gestosc) {
+	int temp;
+	std::chrono::high_resolution_clock::time_point clock;
+	std::chrono::nanoseconds diff;
+
+	reset();
+	stworz_losowe(rozmiar, gestosc);
+
+	srand(time(NULL));
+	for (int i = 0; i < 100; i++) {
+		temp = rand();
+		clock = std::chrono::high_resolution_clock::now();
+		algorytm_Bellmana();
+		diff = std::chrono::high_resolution_clock::now() - clock;
+		std::cout << diff.count() << std::endl;
+	}
 }
