@@ -1,17 +1,17 @@
 ﻿  GrafMacierzowy.cpp
 c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\grafmacierzowy.cpp(76): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\grafmacierzowy.cpp(87): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\grafmacierzowy.cpp(469): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\grafmacierzowy.cpp(487): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\grafmacierzowy.cpp(505): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\grafmacierzowy.cpp(523): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\grafmacierzowy.cpp(495): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\grafmacierzowy.cpp(513): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\grafmacierzowy.cpp(531): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\grafmacierzowy.cpp(549): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   GrafListowy.cpp
 c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\graflistowy.cpp(50): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\graflistowy.cpp(61): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\graflistowy.cpp(401): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\graflistowy.cpp(419): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\graflistowy.cpp(437): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\graflistowy.cpp(455): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\graflistowy.cpp(433): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\graflistowy.cpp(451): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\graflistowy.cpp(469): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\metron\documents\github\sdizo\sdizo_zadanie2\sdizo_zadanie2\graflistowy.cpp(487): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   Generating Code...
   SDIZO_Zadanie2.vcxproj -> C:\Users\Metron\Documents\GitHub\SDIZO\SDIZO_Zadanie2\Debug\SDIZO_Zadanie2.exe
   SDIZO_Zadanie2.vcxproj -> C:\Users\Metron\Documents\GitHub\SDIZO\SDIZO_Zadanie2\Debug\SDIZO_Zadanie2.pdb (Full PDB)

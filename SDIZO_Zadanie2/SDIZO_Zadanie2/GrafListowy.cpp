@@ -147,12 +147,21 @@ ListaKrawedzi GrafListowy::algorytm_Prima(int wierzcholek_poczatkowy)
 
 	//dodanie krawedzi pierwszego wierzcholka
 	for (int index_kr = 0; index_kr < ilosc_krawedzi; index_kr++) {
-		if (lista[index_kr].wierzcholek_poprzedzajacy == wierzcholek_poczatkowy) {
-			kr_pocz = wierzcholek_poczatkowy;
-			kr_kon = lista[index_kr].wierzcholek_nastepny;
-			kr_waga = lista[index_kr].waga;
-			priorytetowa.dodaj_krawedz(kr_pocz, kr_kon, kr_waga);
-		}
+			if (lista[index_kr].wierzcholek_poprzedzajacy == wierzcholek_poczatkowy ) {
+				kr_pocz = wierzcholek_poczatkowy;
+				kr_kon = lista[index_kr].wierzcholek_nastepny;
+				kr_waga = lista[index_kr].waga;
+				priorytetowa.dodaj_krawedz(kr_pocz, kr_kon, kr_waga);
+				lista_krawedzi[index_kr] = true;
+			}
+			else if (lista[index_kr].wierzcholek_nastepny == wierzcholek_poczatkowy) {
+				kr_pocz = wierzcholek_poczatkowy;
+				kr_kon = lista[index_kr].wierzcholek_poprzedzajacy;
+				kr_waga = lista[index_kr].waga;
+				priorytetowa.dodaj_krawedz(kr_pocz, kr_kon, kr_waga);
+				lista_krawedzi[index_kr] = true;
+			}
+
 	}
 
 	while (warunek_konca == false) {
@@ -162,14 +171,15 @@ ListaKrawedzi GrafListowy::algorytm_Prima(int wierzcholek_poczatkowy)
 		kr_waga = priorytetowa.lista[0].waga;
 		for (int index = 0; index < priorytetowa.ilosc_krawedzi; index++) {
 			if (kr_waga > priorytetowa.lista[index].waga) {
-				kr_kon = priorytetowa.lista[index].wierzcholek_nastepny;
+				kr_kon  = priorytetowa.lista[index].wierzcholek_nastepny;
 				kr_pocz = priorytetowa.lista[index].wierzcholek_poprzedni;
 				kr_waga = priorytetowa.lista[index].waga;
 			}
 		}
-		priorytetowa.usun_krawedz(kr_pocz, kr_kon, kr_waga);
 		//dodanie do listy koncowej
+		priorytetowa.usun_krawedz(kr_pocz, kr_kon, kr_waga);
 		koncowa.dodaj_krawedz(kr_pocz, kr_kon, kr_waga);
+
 		//dodanie wierzcholka
 		wierzcholkow[kr_kon] = true;
 
@@ -186,14 +196,23 @@ ListaKrawedzi GrafListowy::algorytm_Prima(int wierzcholek_poczatkowy)
 		}
 
 		//dodanie do listy priorytetowej
-		for (int index_kr = 0, index_wierzcholka = kr_kon; index_kr < ilosc_krawedzi; index_kr++) {
-			if (lista[index_kr].wierzcholek_poprzedzajacy == index_wierzcholka) {
-				kr_pocz = index_wierzcholka;
+		for (int index_kr = 0; index_kr < ilosc_krawedzi; index_kr++) {
+			if (wierzcholkow[lista[index_kr].wierzcholek_poprzedzajacy] ==true && lista_krawedzi[index_kr] == false) {
+				kr_pocz = lista[index_kr].wierzcholek_poprzedzajacy;
 				kr_kon = lista[index_kr].wierzcholek_nastepny;
 				kr_waga = lista[index_kr].waga;
 				priorytetowa.dodaj_krawedz(kr_pocz, kr_kon, kr_waga);
-			}	
+				lista_krawedzi[index_kr] = true;
+			}
+			else if (wierzcholkow[lista[index_kr].wierzcholek_nastepny] == true && lista_krawedzi[index_kr] == false) {
+				kr_pocz = lista[index_kr].wierzcholek_nastepny;
+				kr_kon = lista[index_kr].wierzcholek_poprzedzajacy;
+				kr_waga = lista[index_kr].waga;
+				priorytetowa.dodaj_krawedz(kr_pocz, kr_kon, kr_waga);
+				lista_krawedzi[index_kr] = true;
+			}
 		}
+
 		if (priorytetowa.lista == NULL) {
 			std::cout << "Wystapil blad: Nie mozliwym jest stworzenie drzewa MST" << std::endl;
 			break;
@@ -241,6 +260,11 @@ ListaKrawedzi GrafListowy::algorytm_Kruskala()
 	//Algorytm Kruskala
 	warunek_konca = false;
 	for (int index_pr = 0; warunek_konca == false; index_pr++) {
+		if (index_pr >= ilosc_krawedzi) {
+			std::cout << "Nie udalo sie utworzyc drzewa MST" << std::endl;
+			return koncowa;
+		}
+
 		if (wierzcholki[priorytetowa.lista[index_pr].wierzcholek_poprzedni] == 0 && wierzcholki[priorytetowa.lista[index_pr].wierzcholek_nastepny] == 0) {
 			wierzcholki[priorytetowa.lista[index_pr].wierzcholek_poprzedni] = kolor_wolny;
 			wierzcholki[priorytetowa.lista[index_pr].wierzcholek_nastepny] = kolor_wolny;
@@ -291,11 +315,7 @@ ListaKrawedzi GrafListowy::algorytm_Djikstry(int wierzcholek_poczatkowy, int wie
 	ListaKrawedzi koncowa;
 	int *tablica_wag, *tablica_poprzednikow;
 	bool warunek_konca = false, *tablica_rozluznionych;
-
-	if (wierzcholek_poczatkowy < 0 || wierzcholek_szukany < 0 || wierzcholek_szukany >= ilosc_wierzcholkow || wierzcholek_poczatkowy >= ilosc_wierzcholkow) {
-		std::cout << "Bledny zakres" << std::endl;
-		return koncowa;
-	}
+	int iteracja = 0;
 
 	tablica_poprzednikow	= (int*)calloc(ilosc_wierzcholkow, sizeof(int));
 	tablica_wag				= (int*)calloc(ilosc_wierzcholkow, sizeof(int));
@@ -335,6 +355,12 @@ ListaKrawedzi GrafListowy::algorytm_Djikstry(int wierzcholek_poczatkowy, int wie
 				}
 			}
 		}
+		iteracja++;
+		if (iteracja > ilosc_wierzcholkow * 2) {
+			std::cout << "Nie udalo sie znalesc sciezki" << std::endl;
+			return koncowa;
+		}
+
 	}
 
 	int wierzcho³ek_obecny = wierzcholek_szukany;
@@ -356,11 +382,6 @@ ListaKrawedzi GrafListowy::algorytm_Bellmana() {
 ListaKrawedzi GrafListowy::algorytm_Bellmana(int wierzcholek_poczatkowy, int wierzcholek_szukany) {
 	ListaKrawedzi koncowa;
 	int *tablica_wag, *tablica_poprzednikow;
-
-	if (wierzcholek_poczatkowy < 0 || wierzcholek_szukany < 0 || wierzcholek_szukany >= ilosc_wierzcholkow || wierzcholek_poczatkowy >= ilosc_wierzcholkow) {
-		std::cout << "Bledny zakres" << std::endl;
-		return koncowa;
-	}
 
 
 	tablica_poprzednikow = (int*)calloc(ilosc_wierzcholkow, sizeof(int));

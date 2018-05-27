@@ -296,6 +296,11 @@ ListaKrawedzi GrafMacierzowy::algorytm_Kruskala()
 	//Algorytm Kruskala
 	warunek_konca = false;
 	for (int index_pr = 0; warunek_konca == false; index_pr++) {
+		if (index_pr >= ilosc_krawedzi) {
+			std::cout << "Nie udalo sie znalesc drzewa MST" << std::endl;
+			return koncowa;
+		}
+
 		if (wierzcholki[priorytetowa.lista[index_pr].wierzcholek_poprzedni] == 0 && wierzcholki[priorytetowa.lista[index_pr].wierzcholek_nastepny] == 0) {
 			wierzcholki[priorytetowa.lista[index_pr].wierzcholek_poprzedni] = kolor_wolny;
 			wierzcholki[priorytetowa.lista[index_pr].wierzcholek_nastepny] = kolor_wolny;
@@ -347,6 +352,7 @@ ListaKrawedzi GrafMacierzowy::algorytm_Djikstry(int wierzcholek_poczatkowy, int 
 	int *tablica_wag, *tablica_poprzednikow;
 	bool warunek_konca = false, *tablica_rozluznionych;
 	int wierzcho³ek_obecny;
+	int iteracja = 0;
 
 	if (wierzcholek_poczatkowy < 0 || wierzcholek_szukany < 0 || wierzcholek_szukany >= ilosc_wierzcholkow || wierzcholek_poczatkowy >= ilosc_wierzcholkow) {
 		std::cout << "Bledny zakres" << std::endl;
@@ -396,6 +402,11 @@ ListaKrawedzi GrafMacierzowy::algorytm_Djikstry(int wierzcholek_poczatkowy, int 
 					warunek_konca = false;
 				}
 			}
+		}
+		iteracja++;
+		if (iteracja > ilosc_wierzcholkow * 2) {
+			std::cout << "Nie udalo sie znalesc sciezki" << std::endl;
+			return koncowa;
 		}
 	}
 

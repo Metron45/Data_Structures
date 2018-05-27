@@ -185,6 +185,8 @@ void menu_testowe() {
 					wynik.wypisz();
 					break;
 				case 5:
+					std::cout << "Podaj poczatek: ";
+					std::cin >> pocz;
 					if (struktura == 1) {
 						wynik = macierz.algorytm_Kruskala();
 					}
