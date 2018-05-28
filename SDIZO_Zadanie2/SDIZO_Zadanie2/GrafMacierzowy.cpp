@@ -256,6 +256,7 @@ ListaKrawedzi GrafMacierzowy::algorytm_Kruskala()
 	bool bauble_boost, warunek_konca;
 	int * wierzcholki, kolor_wolny, kolor_temp;
 
+
 	//ustawienie kolejki priorytetowej
 	for (int index_krawedzi = 0; index_krawedzi < ilosc_krawedzi; index_krawedzi++) {
 		for (int index_w = 0; index_w < ilosc_wierzcholkow; index_w++) {

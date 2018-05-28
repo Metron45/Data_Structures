@@ -48,7 +48,7 @@ void GrafListowy::stworz_minimalne(int rozmiar)
 {
 	reset();
 	srand(time(NULL));
-	while (ilosc_wierzcholkow <= rozmiar) {
+	while (ilosc_wierzcholkow < rozmiar) {
 		dodaj_wierzcholek();
 		if (ilosc_wierzcholkow > 1) {
 			dodaj_krawedz(rand() % (ilosc_wierzcholkow - 1), ilosc_wierzcholkow - 1, rand()%10000);
